@@ -21,8 +21,13 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
     <dependency>
       <groupId>io.vertx</groupId>
       <artifactId>vertx-unit</artifactId>
-      <version>3.0.0</version>
+      <version>3.5.0</version>
       <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.vertx</groupId>
+      <artifactId>vertx-web</artifactId>
+      <version>3.5.0</version>
     </dependency>
   </dependencies>
   <build>
@@ -57,7 +62,8 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
                 </transformer>
               </transformers>
               <artifactSet />
-              <outputFile>${project.build.directory}/${project.artifactId}-${project.version}-fat.jar</outputFile>
+              <outputFile>
+              ${project.build.directory}/${project.artifactId}-${project.version}-fat.jar</outputFile>
             </configuration>
           </execution>
         </executions>

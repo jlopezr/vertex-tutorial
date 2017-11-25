@@ -13,9 +13,11 @@ import org.junit.runner.RunWith;
 public class MyFirstVerticleTest {
 
   private Vertx vertx;
+  private int port;
 
   @Before
   public void setUp(TestContext context) {
+    port = 8080;
     vertx = Vertx.vertx();
     vertx.deployVerticle(MyFirstVerticle.class.getName(),
         context.asyncAssertSuccess());
@@ -30,7 +32,7 @@ public class MyFirstVerticleTest {
   public void testMyApplication(TestContext context) {
     final Async async = context.async();
 
-    vertx.createHttpClient().getNow(8080, "localhost", "/",
+    vertx.createHttpClient().getNow(port, "localhost", "/",
      response -> {
       response.handler(body -> {
         context.assertTrue(body.toString().contains("Hello"));
@@ -38,4 +40,18 @@ public class MyFirstVerticleTest {
       });
     });
   }
+
+  @Test
+  public void checkThatTheIndexPageIsServed(TestContext context) {
+    Async async = context.async();
+    vertx.createHttpClient().getNow(port, "localhost", "/assets/index.html", response -> {
+      context.assertEquals(response.statusCode(), 200);
+      context.assertEquals(response.headers().get("content-type"), "text/html;charset=UTF-8");
+      response.bodyHandler(body -> {
+        context.assertTrue(body.toString().contains("<title>My Whisky Collection</title>"));
+        async.complete();
+      });
+    });
+  }
+
 }
